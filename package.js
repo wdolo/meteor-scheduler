@@ -21,10 +21,10 @@ Package.onUse(function(api) {
     );
 
     var imagesFolder = "dhtmlx_scheduler/codebase/";
-    api.addFiles(getFilesFromFolder(imagesFolder + "imgs"), "client");
-    api.addFiles(getFilesFromFolder(imagesFolder + "imgs_dhx_terrace"), "client");
-    api.addFiles(getFilesFromFolder(imagesFolder + "imgs_flat"), "client");
-    api.addFiles(getFilesFromFolder(imagesFolder + "imgs_glossy"), "client");
+    //api.addFiles(getFilesFromFolder(imagesFolder + "imgs"), "client");
+    //api.addFiles(getFilesFromFolder(imagesFolder + "imgs_dhx_terrace"), "client");
+    //api.addFiles(getFilesFromFolder(imagesFolder + "imgs_flat"), "client");
+    //api.addFiles(getFilesFromFolder(imagesFolder + "imgs_glossy"), "client");
     api.export("scheduler", "client");
 });
 

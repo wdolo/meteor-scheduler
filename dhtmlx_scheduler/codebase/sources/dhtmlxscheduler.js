@@ -1,12 +1,13 @@
 /*
 @license
-dhtmlxScheduler v.4.3.1 
+dhtmlxScheduler v.4.3.1
 
 This software is covered by GPL license. You also can obtain Commercial or Enterprise license to use it in non-GPL project - please contact sales@dhtmlx.com. Usage without proper license is prohibited.
 
 (c) Dinamenta, UAB.
 */
 scheduler = dhtmlXScheduler = window.dhtmlXScheduler = window.scheduler = { version: "4.3.1" };
+dhtmlx = dhtmlx ? dhtmlx : {};
 
 if (!window.dhtmlx) {
 	dhtmlx = function(obj){
@@ -14,6 +15,7 @@ if (!window.dhtmlx) {
 		return dhtmlx; //simple singleton
 	};
 }
+
 dhtmlx.extend_api=function(name,map,ext){
     var t = window[name];
     if (!t) return; //component not defined
@@ -492,7 +494,7 @@ dhtmlDragAndDropObject.prototype.callDrag=function(e){
         oldBody.dhtmlDragAndDrop.dragNode=dragger.dragNode;
     }
 
-    dragger.dragNode.style.left=e.clientX+15 + 
+    dragger.dragNode.style.left=e.clientX+15 +
         (dragger.fx ? dragger.fx*(-1) : 0) +
         (document.body.scrollLeft||document.documentElement.scrollLeft)+"px";
     dragger.dragNode.style.top=e.clientY+3+
@@ -875,7 +877,7 @@ dtmlXMLLoaderObject.prototype.doXSLTransToObject=function(xslDoc, xmlDoc){
     if (xmlDoc.responseXML)
         xmlDoc=xmlDoc.responseXML;
 
-    
+
     var result;
     //Mozilla
     if (!_isIE){
@@ -1007,7 +1009,7 @@ if(!window.dhtmlx)
 		document.attachEvent("onkeydown", modal_key);
 	else
 		document.addEventListener("keydown", modal_key, true);
-		
+
 	function modality(mode){
 		if(!modality.cover){
 			modality.cover = document.createElement("DIV");
@@ -1048,7 +1050,7 @@ if(!window.dhtmlx)
 			t.area.insertBefore(message,t.area.firstChild);
 		else
 			t.area.appendChild(message);
-		
+
 		if (text.expire > 0)
 			t.timers[text.id]=window.setTimeout(function(){
 				t.hide(text.id);
@@ -1063,7 +1065,7 @@ if(!window.dhtmlx)
 		var box = document.createElement("DIV");
 		box.className = " dhtmlx_modal_box dhtmlx-"+config.type;
 		box.setAttribute("dhxbox", 1);
-			
+
 		var inner = '';
 
 		if (config.width)
@@ -1093,7 +1095,7 @@ if(!window.dhtmlx)
 
 		if (config.content){
 			var node = config.content;
-			if (typeof node == "string") 
+			if (typeof node == "string")
 				node = document.getElementById(node);
 			if (node.style.display == 'none')
 				node.style.display = "";
@@ -1118,7 +1120,7 @@ if(!window.dhtmlx)
 	}
 	function _createBox(config, ok, cancel){
 		var box = config.tagName ? config : _boxStructure(config, ok, cancel);
-		
+
 		if (!config.hidden)
 			modality(true);
 		document.body.appendChild(box);
@@ -1225,7 +1227,7 @@ if(!window.dhtmlx)
 				obj = null;
 			},2000);
 			obj.className+=" hidden";
-			
+
 			if(t.timers[id])
 				window.clearTimeout(t.timers[id]);
 			delete t.pull[id];
@@ -1233,28 +1235,28 @@ if(!window.dhtmlx)
 	};
 })();
 /**
-	* 	@desc: constructor, data processor object 
+	* 	@desc: constructor, data processor object
 	*	@param: serverProcessorURL - url used for update
 	*	@type: public
 	*/
 function dataProcessor(serverProcessorURL){
     this.serverProcessor = serverProcessorURL;
     this.action_param="!nativeeditor_status";
-    
+
 	this.object = null;
 	this.updatedRows = []; //ids of updated rows
-	
+
 	this.autoUpdate = true;
 	this.updateMode = "cell";
-	this._tMode="GET"; 
+	this._tMode="GET";
 	this.post_delim = "_";
-	
+
     this._waitMode=0;
     this._in_progress={};//?
     this._invalid={};
     this.mandatoryFields=[];
     this.messages=[];
-    
+
     this.styles={
     	updated:"font-weight:bold;",
     	inserted:"font-weight:bold;",
@@ -1264,7 +1266,7 @@ function dataProcessor(serverProcessorURL){
     	error:"color:red;",
     	clear:"font-weight:normal;text-decoration:none;"
     };
-    
+
     this.enableUTFencoding(true);
     dhtmlxEventable(this);
 
@@ -1296,7 +1298,7 @@ dataProcessor.prototype={
 	* 	@desc: allows to set escaping mode
 	*	@param: true - utf based escaping, simple - use current page encoding
 	*	@type: public
-	*/	
+	*/
 	enableUTFencoding:function(mode){
         this._utf=convertStringToBoolean(mode);
     },
@@ -1357,7 +1359,7 @@ dataProcessor.prototype={
 	setUpdated:function(rowId,state,mode){
 		if (this._silent_mode) return;
 		var ind=this.findRow(rowId);
-		
+
 		mode=mode||"updated";
 		var existing = this.obj.getUserData(rowId,this.action_param);
 		if (existing && mode == "updated") mode=existing;
@@ -1365,7 +1367,7 @@ dataProcessor.prototype={
 			this.set_invalid(rowId,false); //clear previous error flag
 			this.updatedRows[ind]=rowId;
 			this.obj.setUserData(rowId,this.action_param,mode);
-			if (this._in_progress[rowId]) 
+			if (this._in_progress[rowId])
 				this._in_progress[rowId]="wait";
 		} else{
 			if (!this.is_invalid(rowId)){
@@ -1377,12 +1379,12 @@ dataProcessor.prototype={
 		//clear changed flag
 		if (!state)
 			this._clearUpdateFlag(rowId);
-     			
+
 		this.markRow(rowId,state,mode);
 		if (state && this.autoUpdate) this.sendData(rowId);
 	},
 	_clearUpdateFlag:function(id){},
-	markRow:function(id,state,mode){ 
+	markRow:function(id,state,mode){
 		var str="";
 		var invalid=this.is_invalid(id);
 		if (invalid){
@@ -1392,7 +1394,7 @@ dataProcessor.prototype={
 		if (this.callEvent("onRowMark",[id,state,mode,invalid])){
 			//default logic
 			str=this.styles[state?mode:"clear"]+str;
-			
+
         	this.obj[this._methods[0]](id,str);
 
 			if (invalid && invalid.details){
@@ -1409,7 +1411,7 @@ dataProcessor.prototype={
 	is_invalid:function(id){
 		return this._invalid[id];
 	},
-	set_invalid:function(id,mode,details){ 
+	set_invalid:function(id,mode,details){
 		if (details) mode={value:mode, details:details, toString:function(){ return this.value.toString(); }};
 		this._invalid[id]=mode;
 	},
@@ -1418,7 +1420,7 @@ dataProcessor.prototype={
 	*	@param: rowId - id of row to set update-status for
 	*	@type: public
 	*/
-	checkBeforeUpdate:function(rowId){ 
+	checkBeforeUpdate:function(rowId){
 		return true;
 	},
 	/**
@@ -1429,17 +1431,17 @@ dataProcessor.prototype={
 	sendData:function(rowId){
 		if (this._waitMode && (this.obj.mytype=="tree" || this.obj._h2)) return;
 		if (this.obj.editStop) this.obj.editStop();
-	
-		
+
+
 		if(typeof rowId == "undefined" || this._tSend) return this.sendAllData();
 		if (this._in_progress[rowId]) return false;
-		
+
 		this.messages=[];
 		if (!this.checkBeforeUpdate(rowId) && this.callEvent("onValidationError",[rowId,this.messages])) return false;
 		this._beforeSendData(this._getRowData(rowId),rowId);
     },
     _beforeSendData:function(data,rowId){
-    	if (!this.callEvent("onBeforeUpdate",[rowId,this.getState(rowId),data])) return false;	
+    	if (!this.callEvent("onBeforeUpdate",[rowId,this.getState(rowId),data])) return false;
 		this._sendData(data,rowId);
     },
     serialize:function(data, id){
@@ -1474,8 +1476,8 @@ dataProcessor.prototype={
     },
     _sendData:function(a1,rowId){
     	if (!a1) return; //nothing to send
-		if (!this.callEvent("onBeforeDataSending",rowId?[rowId,this.getState(rowId),a1]:[null, null, a1])) return false;				
-		
+		if (!this.callEvent("onBeforeDataSending",rowId?[rowId,this.getState(rowId),a1]:[null, null, a1])) return false;
+
     	if (rowId)
 			this._in_progress[rowId]=(new Date()).valueOf();
 		var a2=new dtmlXMLLoaderObject(function(that,b,c,d,xml){
@@ -1488,7 +1490,7 @@ dataProcessor.prototype={
 
 			return that.afterUpdate(that,xml,ids);
 		},this,true);
-		
+
 		var a3 = this.serverProcessor+(this._user?(getUrlSymbol(this.serverProcessor)+["dhx_user="+this._user,"dhx_version="+this.obj.getUserData(0,"version")].join("&")):"");
 
 		if (this._tMode=="GET")
@@ -1509,14 +1511,14 @@ dataProcessor.prototype={
 		this._waitMode++;
     },
 	sendAllData:function(){
-		if (!this.updatedRows.length) return;			
+		if (!this.updatedRows.length) return;
 
 		this.messages=[]; var valid=true;
 		for (var i=0; i<this.updatedRows.length; i++)
 			valid&=this.checkBeforeUpdate(this.updatedRows[i]);
 		if (!valid && !this.callEvent("onValidationError",["",this.messages])) return false;
-	
-		if (this._tSend) 
+
+		if (this._tSend)
 			this._sendData(this._getAllData());
 		else
 			for (var i=0; i<this.updatedRows.length; i++)
@@ -1526,14 +1528,14 @@ dataProcessor.prototype={
 					if (this._waitMode && (this.obj.mytype=="tree" || this.obj._h2)) return; //block send all for tree
 				}
 	},
-    
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 	_getAllData:function(rowId){
 		var out={};
 		var has_one = false;
@@ -1547,8 +1549,8 @@ dataProcessor.prototype={
 		}
 		return has_one?out:null;
 	},
-	
-	
+
+
 	/**
 	* 	@desc: specify column which value should be varified before sending to server
 	*	@param: ind - column index (0 based)
@@ -1566,11 +1568,11 @@ dataProcessor.prototype={
 	clearVerificator:function(ind){
 		this.mandatoryFields[ind] = false;
 	},
-	
-	
-	
-	
-	
+
+
+
+
+
 	findRow:function(pattern){
 		var i=0;
     	for(i=0;i<this.updatedRows.length;i++)
@@ -1578,11 +1580,11 @@ dataProcessor.prototype={
 	    return i;
     },
 
-   
-	
 
 
-    
+
+
+
 
 
 
@@ -1614,14 +1616,14 @@ dataProcessor.prototype={
 		var marker = sid;
 		var correct=(action!="error" && action!="invalid");
 		if (!correct) this.set_invalid(sid,action);
-		if ((this._uActions)&&(this._uActions[action])&&(!this._uActions[action](btag))) 
+		if ((this._uActions)&&(this._uActions[action])&&(!this._uActions[action](btag)))
 			return (delete this._in_progress[marker]);
-			
+
 		if (this._in_progress[marker]!="wait")
 	    	this.setUpdated(sid, false);
-	    	
+
 	    var soid = sid;
-	
+
 	    switch (action) {
 	    case "inserted":
 	    case "insert":
@@ -1637,7 +1639,7 @@ dataProcessor.prototype={
 	        delete this._in_progress[marker];
 	        return this.callEvent("onAfterUpdate", [sid, action, tid, btag]);
 	    }
-	    
+
 	    if (this._in_progress[marker]!="wait"){
 	    	if (correct) this.obj.setUserData(sid, this.action_param,'');
 	    	delete this._in_progress[marker];
@@ -1645,7 +1647,7 @@ dataProcessor.prototype={
     		delete this._in_progress[marker];
     		this.setUpdated(tid,true,this.obj.getUserData(sid,this.action_param));
 		}
-	    
+
 	    this.callEvent("onAfterUpdate", [soid, action, tid, btag]);
 	},
 
@@ -1686,7 +1688,7 @@ dataProcessor.prototype={
 			var action = btag.getAttribute("type");
 			var sid = btag.getAttribute("sid");
 			var tid = btag.getAttribute("tid");
-			
+
 			that.afterUpdateCallback(sid,tid,action,btag);
 		}
 		that.finalizeUpdate();
@@ -1698,8 +1700,8 @@ dataProcessor.prototype={
 	},
 	finalizeUpdate:function(){
 		if (this._waitMode) this._waitMode--;
-		
-		if ((this.obj.mytype=="tree" || this.obj._h2) && this.updatedRows.length) 
+
+		if ((this.obj.mytype=="tree" || this.obj._h2) && this.updatedRows.length)
 			this.sendData();
 		this.callEvent("onAfterUpdateFinish",[]);
 		if (!this.updatedRows.length)
@@ -1709,7 +1711,7 @@ dataProcessor.prototype={
 
 
 
-	
+
 	/**
 	* 	@desc: initializes data-processor
 	*	@param: anObj - dhtmlxGrid object to attach this data-processor to
@@ -1717,17 +1719,17 @@ dataProcessor.prototype={
 	*/
 	init:function(anObj){
 		this.obj = anObj;
-		if (this.obj._dp_init) 
+		if (this.obj._dp_init)
 			this.obj._dp_init(this);
 	},
-	
-	
+
+
 	setOnAfterUpdate:function(ev){
 		this.attachEvent("onAfterUpdate",ev);
 	},
 	enableDebug:function(mode){
 	},
-	setOnBeforeUpdateHandler:function(func){  
+	setOnBeforeUpdateHandler:function(func){
 		this.attachEvent("onBeforeDataSending",func);
 	},
 
@@ -1739,19 +1741,19 @@ dataProcessor.prototype={
 	*/
 	setAutoUpdate: function(interval, user) {
 		interval = interval || 2000;
-		
+
 		this._user = user || (new Date()).valueOf();
 		this._need_update = false;
 		this._loader = null;
 		this._update_busy = false;
-		
+
 		this.attachEvent("onAfterUpdate",function(sid,action,tid,xml_node){
 			this.afterAutoUpdate(sid, action, tid, xml_node);
 		});
 		this.attachEvent("onFullSync",function(){
 			this.fullSync();
 		});
-		
+
 		var self = this;
 		window.setInterval(function(){
 			self.loadUpdate();
@@ -1788,13 +1790,13 @@ dataProcessor.prototype={
 	/* sends query to the server and call callback function
 	*/
 	getUpdates: function(url,callback){
-		if (this._update_busy) 
+		if (this._update_busy)
 			return false;
 		else
 			this._update_busy = true;
-		
+
 		this._loader = this._loader || new dtmlXMLLoaderObject(true);
-		
+
 		this._loader.async=true;
 		this._loader.waitCall=callback;
 		this._loader.loadXML(url);
@@ -1834,11 +1836,11 @@ dataProcessor.prototype={
 		this.getUpdates(url, function(){
 			var vers = self._loader.doXPath("//userdata");
 			self.obj.setUserData(0,"version",self._v(vers[0]));
-			
+
 			var upds = self._loader.doXPath("//update");
 			if (upds.length){
 				self._silent_mode = true;
-				
+
 				for (var i=0; i<upds.length; i++) {
 					var status = upds[i].getAttribute('status');
 					var id = upds[i].getAttribute('id');
@@ -1855,10 +1857,10 @@ dataProcessor.prototype={
 							break;
 					}
 				}
-				
+
 				self._silent_mode = false;
 			}
-			
+
 			self._update_busy = false;
 			self = null;
 		});
@@ -1938,6 +1940,9 @@ scheduler._init_once = function(){
 	scheduler._init_once = function(){};
 };
 scheduler.init=function(id,date,mode){
+    console.log(id);
+    console.log('yo');
+    console.log(this);
 	date=date||(scheduler._currentDate());
 	mode=mode||"week";
 
@@ -1991,17 +1996,17 @@ scheduler.keys={
 scheduler.set_sizes=function(){
 	var w = this._x = this._obj.clientWidth-this.xy.margin_left;
 	var h = this._y = this._obj.clientHeight-this.xy.margin_top;
-	
+
 	//not-table mode always has scroll - need to be fixed in future
 	var scale_x=this._table_view?0:(this.xy.scale_width+this.xy.scroll_width);
 	var scale_s=this._table_view?-1:this.xy.scale_width;
-	
+
 	this.set_xy(this._els["dhx_cal_navline"][0],w,this.xy.nav_height,0,0);
 	this.set_xy(this._els["dhx_cal_header"][0],w-scale_x,this.xy.scale_height,scale_s,this.xy.nav_height+(this._quirks?-1:1));
 	//to support alter-skin, we need a way to alter height directly from css
 	var actual_height = this._els["dhx_cal_navline"][0].offsetHeight;
 	if (actual_height > 0) this.xy.nav_height = actual_height;
-	
+
 	var data_y=this.xy.scale_height+this.xy.nav_height+(this._quirks?-2:0);
 	this.set_xy(this._els["dhx_cal_data"][0],w,h-(data_y+2),0,data_y+2);
 };
@@ -2010,7 +2015,7 @@ scheduler.set_xy=function(node,w,h,x,y){
 	node.style.height=Math.max(0,h)+"px";
 	if (arguments.length>3){
 		node.style.left=x+"px";
-		node.style.top=y+"px";	
+		node.style.top=y+"px";
 	}
 };
 scheduler.get_elements=function(){
@@ -2022,7 +2027,7 @@ scheduler.get_elements=function(){
 		if (class_name) class_name = class_name.split(" ")[0];
 		if (!this._els[class_name]) this._els[class_name]=[];
 		this._els[class_name].push(els[i]);
-		
+
 		//check if name need to be changed
 		var label = scheduler.locale.labels[attr_value||class_name];
 		if (typeof label !== "string" && attr_value && !els[i].innerHTML)
@@ -2115,7 +2120,7 @@ scheduler._click={
 
 		var trg = e?e.target:event.srcElement;
 		var id = scheduler._locate_event(trg);
-		
+
 		e = e || event;
 
 		if (!id) {
@@ -2185,7 +2190,7 @@ scheduler.addEventNow=function(start,end,e){
 		base = start;
 		start = null;
 	}
-	
+
 	var d = (this.config.event_duration||this.config.time_step)*60000;
 	if (!start) start = base.start_date||Math.round((scheduler._currentDate()).valueOf()/d)*d;
 	var start_date = new Date(start);
@@ -2213,9 +2218,9 @@ scheduler.addEventNow=function(start,end,e){
 	this.addEvent(base);
 	this.callEvent("onEventCreated",[this._drag_id,e]);
 	this._loading=false;
-	
+
 	this._drag_event={}; //dummy , to trigger correct event updating logic
-	this._on_mouse_up(e);	
+	this._on_mouse_up(e);
 };
 scheduler._on_dbl_click=function(e,src){
 	src = src||(e.target||e.srcElement);
@@ -2356,7 +2361,7 @@ scheduler._close_not_saved=function(){
 	}
 };
 scheduler._correct_shift=function(start, back){
-	return start-=((new Date(scheduler._min_date)).getTimezoneOffset()-(new Date(start)).getTimezoneOffset())*60000*(back?-1:1);	
+	return start-=((new Date(scheduler._min_date)).getTimezoneOffset()-(new Date(start)).getTimezoneOffset())*60000*(back?-1:1);
 };
 
 scheduler._is_pos_changed = function(old_pos, new_pos){
@@ -2392,7 +2397,7 @@ scheduler._on_mouse_move=function(e){
 				this._close_not_saved();
 				this.unselect(this._select_id);
 				this._loading=true; //will be ignored by dataprocessor
-				
+
 				start = this._get_date_from_pos(pos).valueOf();
 
 				if (!this._drag_start) {
@@ -2417,15 +2422,15 @@ scheduler._on_mouse_move=function(e){
 						end_date = new Date(this._drag_start+1000);
 				}
 
-				
+
 				this._drag_id=this.uid();
 				this.addEvent(start_date, end_date, this.locale.labels.new_event, this._drag_id, pos.fields);
-				
+
 				this.callEvent("onEventCreated",[this._drag_id,e]);
 				this._loading=false;
 				this._drag_mode="new-size";
-				
-			} 
+
+			}
 
 			var ev=this.getEvent(this._drag_id);
 			var obj;
@@ -2436,7 +2441,7 @@ scheduler._on_mouse_move=function(e){
 				start = this._correct_shift(start);
 
 				if (pos._ignores && this.config.preserve_length && this._table_view){
-					if (this.matrix) 
+					if (this.matrix)
 						obj = this.matrix[this._mode];
 					obj = obj  || { x_step:1, x_unit:"day" };
 					end = start*1 + this._get_fictional_event_length(start, this._drag_event._event_length, obj);
@@ -2481,7 +2486,7 @@ scheduler._on_mouse_move=function(e){
 						end=start+this.config.time_step*60000;
 				}
 			}
-			var new_end = new Date(end-1);			
+			var new_end = new Date(end-1);
 			var new_start = new Date(start);
 			//deny drag out of visible scheduler scale in timeline view
 			if(scheduler.config.limit_drag_out &&
@@ -2645,7 +2650,7 @@ scheduler._on_mouse_up=function(e){
 		if (moved && (this._drag_event._dhx_changed || !this._drag_event.start_date || ev.start_date.valueOf()!=this._drag_event.start_date.valueOf() || ev.end_date.valueOf()!=this._drag_event.end_date.valueOf())){
 			var is_new=(this._drag_mode=="new-size");
 			if (!this.callEvent("onBeforeEventChanged",[ev, e, is_new, this._drag_event])){
-				if (is_new) 
+				if (is_new)
 					this.deleteEvent(ev.id, true);
 				else {
 					this._drag_event._dhx_changed = false;
@@ -2760,7 +2765,7 @@ scheduler.setCurrentView = function(date, mode) {
 };
 scheduler._render_x_header = function(i,left,d,h, offset_top){
 	offset_top = offset_top || 0;
-	//header scale	
+	//header scale
 	var head=document.createElement("DIV");
 	head.className = "dhx_scale_bar";
 
@@ -2917,21 +2922,21 @@ scheduler._reset_scale=function(){
 				this._els[dhx_multi_day][0].parentNode.removeChild(this._els[dhx_multi_day][0]);
 				this._els[dhx_multi_day] = null;
 			}
-			
+
 			var navline = this._els["dhx_cal_navline"][0];
 			var top = navline.offsetHeight + this._els["dhx_cal_header"][0].offsetHeight+1;
-			
+
 			var c1 = document.createElement("DIV");
 			c1.className = dhx_multi_day;
 			c1.style.visibility="hidden";
 			this.set_xy(c1, Math.max(this._colsS[this._colsS.col_length]+this.xy.scroll_width - 2, 0), 0, 0, top); // 2 extra borders, dhx_header has -1 bottom margin
 			data_area.parentNode.insertBefore(c1,data_area);
-			
+
 			var c2 = c1.cloneNode(true);
 			c2.className = dhx_multi_day+"_icon";
 			c2.style.visibility="hidden";
 			this.set_xy(c2, this.xy.scale_width, 0, 0, top); // dhx_header has -1 bottom margin
-			
+
 			c1.appendChild(c2);
 			this._els[dhx_multi_day]=[c1,c2];
 			this._els[dhx_multi_day][0].onclick = this._click.dhx_cal_data;
@@ -2941,7 +2946,7 @@ scheduler._reset_scale=function(){
 scheduler._reset_hours_scale=function(b,dd,sd){
 	var c=document.createElement("DIV");
 	c.className="dhx_scale_holder";
-	
+
 	var date = new Date(1980,1,1,this.config.first_hour,0,0);
 	for (var i=this.config.first_hour*1; i < this.config.last_hour; i++) {
 		var cc=document.createElement("DIV");
@@ -2954,7 +2959,7 @@ scheduler._reset_hours_scale=function(b,dd,sd){
 		}
 		cc.style.width = width + "px";
 		cc.innerHTML=scheduler.templates.hour_scale(date);
-		
+
 		c.appendChild(cc);
 		date=this.date.add(date,1,"hour");
 	}
@@ -3093,7 +3098,7 @@ scheduler._render_month_scale = function(div, dd/*month start*/, sd/*view start*
 scheduler._reset_month_scale=function(b,dd,sd){
 	//recalculates rows height and redraws month layout
 	var ed=scheduler.date.add(dd,1,"month");
-	
+
 	//trim time part for comparation reasons
 	var cd = scheduler._currentDate();
 	this.date.date_part(cd);
@@ -3102,7 +3107,7 @@ scheduler._reset_month_scale=function(b,dd,sd){
 	var rows=Math.ceil(Math.round((ed.valueOf()-sd.valueOf()) / (60*60*24*1000) ) / 7);
 
 	var height = (Math.floor(b.clientHeight/rows) - this.xy.month_head_height);
-	
+
 	this._colsS.height = height + this.xy.month_head_height;
 	this._colsS.heights = [];
 
@@ -3179,7 +3184,7 @@ scheduler.getActionData = function(n_ev) {
 scheduler._focus = function(node, select){
 	if (node && node.focus){
 		if (this.config.touch){
-			window.setTimeout(function(){ 
+			window.setTimeout(function(){
 				node.focus();
 			},100);
 		} else {
@@ -3254,7 +3259,7 @@ scheduler._get_fictional_event_length=function(end_date, ev_length, obj, back){
 		sd = check;
 		start_slot+=dir;
 	}
-	
+
 	return ev_length;
 };
 
@@ -3378,7 +3383,7 @@ scheduler.date={
 				case "%m": return "\"+scheduler.date.to_fixed((date.getMonth()+1))+\"";
 				case "%j": return "\"+date.getDate()+\"";
 				case "%n": return "\"+(date.getMonth()+1)+\"";
-				case "%y": return "\"+scheduler.date.to_fixed(date.getFullYear()%100)+\""; 
+				case "%y": return "\"+scheduler.date.to_fixed(date.getFullYear()%100)+\"";
 				case "%Y": return "\"+date.getFullYear()+\"";
 				case "%D": return "\"+scheduler.locale.date.day_short[date.getDay()]+\"";
 				case "%l": return "\"+scheduler.locale.date.day_full[date.getDay()]+\"";
@@ -3414,7 +3419,7 @@ scheduler.date={
 					break;
 				case "%g":
 				case "%G":
-				case "%h": 
+				case "%h":
 				case "%H":
 							splt+="set[3]=temp["+i+"]||0;";
 					break;
@@ -3423,9 +3428,9 @@ scheduler.date={
 					break;
 				case "%Y": splt+="set[0]=temp["+i+"]||0;";
 					break;
-				case "%a":					
+				case "%a":
 				case "%A": splt+="set[3]=set[3]%12+((temp["+i+"]||'').toLowerCase()=='am'?0:12);";
-					break;					
+					break;
 				case "%s": splt+="set[5]=temp["+i+"]||0;";
 					break;
 				case "%M": splt+="set[1]=scheduler.locale.date.month_short_hash[temp["+i+"]]||0;";
@@ -3856,7 +3861,7 @@ scheduler.render_view_data = function(evs, hold) {
 		var tvd = [];
 		for (var i = 0; i < evs.length; i++) {
 			if (this._is_main_area_event(evs[i]))
-				tvs.push(evs[i]); 
+				tvs.push(evs[i]);
 			else
 				tvd.push(evs[i]);
 		}
@@ -4360,7 +4365,7 @@ scheduler.updateEvent = function(id) {
 
 	if (ev && this.is_visible_events(ev) && this.filter_event(id, ev) && (this._table_view || this.config.multi_day || ev._timed)) {
 		if (this.config.update_render){
-			this.render_view_data(); 
+			this.render_view_data();
 		}else{
 			if(this.getState().mode == "month" && !this.getState().drag_id && !this.isOneDayEvent(ev)){
 				this.render_view_data();
@@ -4398,7 +4403,7 @@ scheduler.render_event = function(ev) {
 	var menu_offset = (this.config.use_select_menu_space) ? 0 : menu;
 	if (ev._sday < 0) return; //can occur in case of recurring event during time shift
 
-	var parent = scheduler.locate_holder(ev._sday);	
+	var parent = scheduler.locate_holder(ev._sday);
 	if (!parent) return; //attempt to render non-visible event
 
 	var pos_y = this._calc_event_y(ev, scheduler.xy.min_event_height);
@@ -4575,7 +4580,7 @@ scheduler.render_event_bar = function (ev) {
 	var y = pos.y;
 	var x = pos.x;
 	var x2 = pos.x2;
-	
+
 	// resize for month mutliday events
 	var resize_handle = "";
 
@@ -4844,7 +4849,7 @@ scheduler.on_load = function(loader) {
 		this.callEvent("onLoadError", [loader.xmlDoc]);
 		evs = [];
 	}
-	
+
 	scheduler._process_loading(evs);
 
 	this.callEvent("onXLE", []);
@@ -5039,13 +5044,13 @@ scheduler.ical={
 	parse:function(str){
 		var data = str.match(RegExp(this.c_start+"[^\f]*"+this.c_end,""));
 		if (!data.length) return;
-		
-		//unfolding 
+
+		//unfolding
 		data[0]=data[0].replace(/[\r\n]+(?=[a-z \t])/g," ");
 		//drop property
 		data[0]=data[0].replace(/\;[^:\r\n]*:/g,":");
-		
-		
+
+
 		var incoming=[];
 		var match;
 		var event_r = RegExp("(?:"+this.e_start+")([^\f]*?)(?:"+this.e_end+")","g");
@@ -5056,14 +5061,14 @@ scheduler.ical={
 			while ((param=param_r.exec(match[1])) !== null)
 				this.parse_param(param.toString(),e);
 			if (e.uid && !e.id) e.id = e.uid; //fallback to UID, when ID is not defined
-			incoming.push(e);	
+			incoming.push(e);
 		}
 		return incoming;
 	},
 	parse_param:function(str,obj){
-		var d = str.indexOf(":"); 
+		var d = str.indexOf(":");
 			if (d==-1) return;
-		
+
 		var name = str.substr(0,d).toLowerCase();
 		var value = str.substr(d+1).replace(/\\\,/g,",").replace(/[\r\n]+$/,"");
 		if (name=="summary")
@@ -5079,7 +5084,7 @@ scheduler.ical={
 		obj[name]=value;
 	},
 	parse_date:function(value,dh,dm){
-		var t = value.split("T");	
+		var t = value.split("T");
 		if (t[1]){
 			dh=t[1].substr(0,2);
 			dm=t[1].substr(2,2);
@@ -5095,7 +5100,7 @@ scheduler.ical={
 	c_start:"BEGIN:VCALENDAR",
 	e_start:"BEGIN:VEVENT",
 	e_end:"END:VEVENT",
-	c_end:"END:VCALENDAR"	
+	c_end:"END:VCALENDAR"
 };
 scheduler._lightbox_controls = {};
 scheduler.formSection = function(name){
@@ -5194,7 +5199,7 @@ scheduler.form_blocks={
 			return node.firstChild.value;
 		},
 		focus:function(node){
-			var a=node.firstChild; scheduler._focus(a, true); 
+			var a=node.firstChild; scheduler._focus(a, true);
 		}
 	},
 	time:{
@@ -5294,7 +5299,7 @@ scheduler.form_blocks={
 				s[map[0]].disabled=input.checked;
 				s[ map[0] + s.length/2 ].disabled=input.checked;
 
-				input.onclick = function(){ 
+				input.onclick = function(){
 					if(input.checked) {
 						var obj = {};
 						scheduler.form_blocks.time.get_value(node,obj,config);
@@ -5311,12 +5316,12 @@ scheduler.form_blocks={
 
 					s[map[0]].disabled=input.checked;
 					s[ map[0] + s.length/2 ].disabled=input.checked;
-					
+
 					_fill_lightbox_select(s,0,start_date||ev.start_date);
 					_fill_lightbox_select(s,4,end_date||ev.end_date);
 				};
 			}
-			
+
 			if(cfg.auto_end_date && cfg.event_duration) {
 				var _update_lightbox_select = function () {
 					start_date = new Date(s[map[3]].value,s[map[2]].value,s[map[1]].value,0,s[map[0]].value);
@@ -5327,7 +5332,7 @@ scheduler.form_blocks={
 					s[i].onchange = _update_lightbox_select;
 				}
 			}
-			
+
 			function _fill_lightbox_select(s,i,d) {
 				var time_values = config._time_values;
 				var direct_value = d.getHours()*60+d.getMinutes();
@@ -5371,7 +5376,7 @@ scheduler.form_blocks={
 				}
 			}
 
-			if (ev.end_date<=ev.start_date) 
+			if (ev.end_date<=ev.start_date)
 				ev.end_date=scheduler.date.add(ev.start_date,scheduler.config.time_step,"minute");
 			return {
 				start_date: new Date(ev.start_date),
@@ -5379,7 +5384,7 @@ scheduler.form_blocks={
 			};
 		},
 		focus:function(node){
-			scheduler._focus(node.getElementsByTagName("select")[0]); 
+			scheduler._focus(node.getElementsByTagName("select")[0]);
 		}
 	}
 };
@@ -5474,7 +5479,7 @@ scheduler.hideCover=function(box){
 	this.hide_cover();
 };
 scheduler.hide_cover=function(){
-	if (this._cover) 
+	if (this._cover)
 		this._cover.parentNode.removeChild(this._cover);
 	this._cover=null;
 };
@@ -5634,7 +5639,7 @@ scheduler.getLightbox=function(){ //scheduler.config.wide_form=true;
 			d.className+=" dhx_cal_light_wide";
 		if (scheduler.form_blocks.recurring)
 			d.className+=" dhx_cal_light_rec";
-			
+
 		if (/msie|MSIE 6/.test(navigator.userAgent))
 			d.className+=" dhx_ie6";
 		d.style.visibility="hidden";
@@ -5659,7 +5664,7 @@ scheduler.getLightbox=function(){ //scheduler.config.wide_form=true;
 		}
 		document.body.insertBefore(d,document.body.firstChild);
 		this._lightbox=d;
-		
+
 		var sns=this.config.lightbox.sections;
 		html="";
 		for (var i=0; i < sns.length; i++) {
@@ -5670,11 +5675,11 @@ scheduler.getLightbox=function(){ //scheduler.config.wide_form=true;
 			if (sns[i].button){
 			 	button = "<div class='dhx_custom_button' index='"+i+"'><div class='dhx_custom_button_"+sns[i].button+"'></div><div>"+this.locale.labels["button_"+sns[i].button]+"</div></div>";
 			 }
-			
+
 			if (this.config.wide_form){
 				html+="<div class='dhx_wrap_section'>";
 			}
-			
+
 			var label_name = this.locale.labels["section_"+sns[i].name];
 			if(typeof label_name !== "string"){
 				label_name = sns[i].name;
@@ -5732,7 +5737,7 @@ scheduler._init_touch_events = function(){
 				if (ev.touches && ev.touches.length > 1) return null;
 				if (ev.touches[0])
 					return { target:ev.target, pageX:ev.touches[0].pageX, pageY:ev.touches[0].pageY };
-				else 
+				else
 					return ev;
 			}, function(){ return false; });
 	}
@@ -5830,7 +5835,7 @@ scheduler._touch_events = function(names, accessor, ignore){
 		//ignore common and scrolling moves
 		if (!action_mode) return;
 
-		//multitouch		
+		//multitouch
 		if (!tracker){
 			scroll_mode = true;
 			return;
@@ -5857,7 +5862,7 @@ scheduler._touch_events = function(names, accessor, ignore){
 	});
 	attachTouchEvent(this._els["dhx_cal_data"][0], names[1], function(e){
 		if (ignore(e)) return;
-		
+
 		var fake_event;
 		drag_mode = scroll_mode = false;
 		action_mode = true;
@@ -5877,7 +5882,7 @@ scheduler._touch_events = function(names, accessor, ignore){
 			window.setTimeout(function(){
 				scheduler._on_dbl_click(fake_event);
 			}, 50);
-			
+
 			if (e.preventDefault)
 				e.preventDefault();
 			e.cancelBubble = true;
@@ -5887,7 +5892,7 @@ scheduler._touch_events = function(names, accessor, ignore){
 		dblclicktime = now;
 
 		//drag
-		
+
 		if (scroll_mode || drag_mode || !scheduler.config.touch_drag)
 			return;
 
@@ -5906,7 +5911,7 @@ scheduler._touch_events = function(names, accessor, ignore){
 			source = fake_event;
 			return false;
 		}
-		
+
 		//there is no target
 		timer = setTimeout(function(){
 
@@ -5945,7 +5950,7 @@ scheduler._touch_events = function(names, accessor, ignore){
 		scheduler._drag_id = null;
 		scheduler._drag_mode=null;
 		scheduler._drag_pos=null;
-		
+
 		clearTimeout(timer);
 		drag_mode = action_mode = false;
 		scroll_mode = true;
@@ -5955,7 +5960,7 @@ scheduler._touch_events = function(names, accessor, ignore){
 
 		if (!drag_mode)
 			check_direction_swipe(source, tracker, 200, 100);
-		
+
 		if (drag_mode)
 			scheduler._ignore_next_click = true;
 
@@ -5965,9 +5970,9 @@ scheduler._touch_events = function(names, accessor, ignore){
 			if (e.preventDefault)
 				e.preventDefault();
 			e.cancelBubble = true;
-			return false;	
+			return false;
 		}
-	});	
+	});
 
 	dhtmlxEvent(document.body, names[2], drag_cancel);
 };
@@ -6008,7 +6013,7 @@ scheduler._hide_global_tip = function(){
 
 scheduler._dp_init=function(dp){
 	dp._methods=["_set_event_text_style","","changeEventId","_dp_hook_delete"];
-	
+
 	this._dp_hook_delete = function(id){
 		return this.deleteEvent(id, true);
 	};
@@ -6019,11 +6024,11 @@ scheduler._dp_init=function(dp){
 	this.attachEvent("onConfirmedBeforeEventDelete", function(id){
 		if (!this._validId(id)) return;
 		var z=dp.getState(id);
-        
+
 		if (z=="inserted" || this._new_event) {  dp.setUpdated(id,false);		return true; }
 		if (z=="deleted")  return false;
     	if (z=="true_deleted")  return true;
-    	
+
 		dp.setUpdated(id,true,"deleted");
       	return false;
 	});
@@ -6031,11 +6036,11 @@ scheduler._dp_init=function(dp){
 		if (!this._loading && this._validId(id))
 			dp.setUpdated(id,true,"updated");
 	});
-	
+
 	dp._getRowData=function(id,pref){
 		var ev=this.obj.getEvent(id);
 		var data = {};
-		
+
 		for (var a in ev){
 			if (a.indexOf("_") === 0) continue;
 			if (ev[a] && ev[a].getUTCFullYear) //not very good, but will work
@@ -6043,18 +6048,18 @@ scheduler._dp_init=function(dp){
 			else
 				data[a] = ev[a];
 		}
-		
+
 		return data;
 	};
 	dp._clearUpdateFlag=function(){};
-	
+
 	dp.attachEvent("insertCallback", scheduler._update_callback);
 	dp.attachEvent("updateCallback", scheduler._update_callback);
 	dp.attachEvent("deleteCallback", function(upd, id) {
 		this.obj.setUserData(id, this.action_param, "true_deleted");
 		this.obj.deleteEvent(id);
 	});
-		
+
 };
 
 scheduler._validId=function(id){
@@ -6084,7 +6089,7 @@ scheduler._update_callback = function(upd,id){
 	data.text		=	data.text||data._tagvalue;
 	data.start_date	=	scheduler.templates.xml_date(data.start_date);
 	data.end_date	=	scheduler.templates.xml_date(data.end_date);
-	
+
 	scheduler.addEvent(data);
 };
 scheduler._skin_settings = {
@@ -6120,8 +6125,8 @@ scheduler._skin_init = function(){
 		}
 	}
 
-	
-	
+
+
 	var set = 0;
 	if (scheduler.skin && (scheduler.skin === "classic" || scheduler.skin === "glossy")) set = 1;
 
@@ -6142,8 +6147,8 @@ scheduler._skin_init = function(){
 
 	//classic skin need not any further customization
 	if (set) return;
-	
-	
+
+
 	var minic = scheduler.config.minicalendar;
 	if (minic) minic.padding = 14;
 
@@ -6261,9 +6266,9 @@ if (window.jQuery){
 			return views;
 		}
 	};
-	
 
-	
+
+
 
 })(jQuery);
 
