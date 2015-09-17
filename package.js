@@ -21,10 +21,10 @@ Package.onUse(function(api) {
     );
 
     var imagesFolder = "dhtmlx_scheduler/codebase/";
-    //api.addFiles(getFilesFromFolder(imagesFolder + "imgs"), "client");
-    //api.addFiles(getFilesFromFolder(imagesFolder + "imgs_dhx_terrace"), "client");
-    //api.addFiles(getFilesFromFolder(imagesFolder + "imgs_flat"), "client");
-    //api.addFiles(getFilesFromFolder(imagesFolder + "imgs_glossy"), "client");
+    api.addFiles(getFilesFromFolder(imagesFolder + "imgs"), "client");
+    api.addFiles(getFilesFromFolder(imagesFolder + "imgs_dhx_terrace"), "client");
+    api.addFiles(getFilesFromFolder(imagesFolder + "imgs_flat"), "client");
+    api.addFiles(getFilesFromFolder(imagesFolder + "imgs_glossy"), "client");
     api.export("scheduler", "client");
 });
 
@@ -38,11 +38,11 @@ function getFilesFromFolder(folder) {
     var fs = Npm.require("fs"),
         path = Npm.require("path");
 
-    var fullPathToFolder = path.resolve(".", folder),
+    var fullPathToFolder = path.resolve(".", "packages/meteor-scheduler/"+folder),
         files = fs.readdirSync(fullPathToFolder);
 
-    for(var key in files)
-        files[key] = folder + path.sep + files[key];
-
+    for(var key in files){
+        files[key] =  folder + path.sep + files[key];
+    }
     return files;
 }
