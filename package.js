@@ -11,7 +11,7 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom('1.1.0.2');
+  api.versionsFrom('1.2.0.1');
     api.addFiles(
 	[
 	    "dhtmlx_scheduler/codebase/sources/dhtmlxscheduler.js",
@@ -21,10 +21,10 @@ Package.onUse(function(api) {
     );
 
     var imagesFolder = "dhtmlx_scheduler/codebase/";
-    api.addFiles(getFilesFromFolder(imagesFolder + "imgs"), "client");
-    api.addFiles(getFilesFromFolder(imagesFolder + "imgs_dhx_terrace"), "client");
-    api.addFiles(getFilesFromFolder(imagesFolder + "imgs_flat"), "client");
-    api.addFiles(getFilesFromFolder(imagesFolder + "imgs_glossy"), "client");
+    api.addAssets(getFilesFromFolder(imagesFolder + "imgs"), "client");
+    api.addAssets(getFilesFromFolder(imagesFolder + "imgs_dhx_terrace"), "client");
+    api.addAssets(getFilesFromFolder(imagesFolder + "imgs_flat"), "client");
+    api.addAssets(getFilesFromFolder(imagesFolder + "imgs_glossy"), "client");
     api.export("scheduler", "client");
 });
 
